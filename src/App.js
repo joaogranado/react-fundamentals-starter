@@ -9,6 +9,7 @@ import Main from './components/Main';
 import Movie from './components/Movie';
 import Nav from './components/Nav';
 import React from 'react';
+import SearchInput from './components/SearchInput';
 
 /**
 * `App` component.
@@ -16,6 +17,8 @@ import React from 'react';
 
 class App extends React.Component {
   render() {
+    const { movies } = this.props;
+
     return (
       <Main>
         <Nav>
@@ -23,7 +26,12 @@ class App extends React.Component {
         </Nav>
 
         <Container>
-          <Grid items={this.props.movies}>
+          <SearchInput
+            name="search"
+            placeholder="Search..."
+          />
+
+          <Grid items={movies}>
             {(movie) => (
               <Movie
                 key={movie.id}
