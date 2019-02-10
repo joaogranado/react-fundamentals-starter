@@ -12,4 +12,4 @@ import ReactDOM from 'react-dom';
  * Register the `App` on the `#root` element.
  */
 
-ReactDOM.render(<App data={data} />, document.getElementById('root'));
+ReactDOM.render(<App movies={data.results} />, document.getElementById('root'));

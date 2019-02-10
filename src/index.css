@@ -1,3 +1,20 @@
+:root {
+  --unit: 8px;
+
+  /**
+   * Colors.
+   */
+
+  --primary-color: #01d277;
+  --secondary-color: #081c24;
+
+  /**
+   * Box shadows.
+   */
+
+  --box-shadow-base: 0 2px 4px rgba(0,0,0,0.5), 0 8px 16px rgba(0,0,0,0.5);
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,

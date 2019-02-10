@@ -1,0 +1,26 @@
+.movie {
+  width: 100%;
+  box-shadow: var(--box-shadow-base);
+}
+
+.movie-image-container {
+  position: relative;
+}
+
+.movie-backdrop {
+  width: 100%;
+  margin-bottom: -2px;
+}
+
+.movie-poster-sm {
+  position: absolute;
+  bottom: var(--unit);
+  left: var(--unit);
+  width: calc(var(--unit) * 6);
+  z-index: 1;
+  box-shadow: var(--box-shadow-base);
+}
+
+.movie-title {
+  color: #fff;
+}
