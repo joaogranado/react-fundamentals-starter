@@ -76,7 +76,7 @@ class App extends React.Component {
           </SearchInput>
 
           <Grid>
-            {results.map((movie) => (
+            {movies.map((movie) => (
               <Movie
                 backdropUrl={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path || movie.poster_path}`}
                 key={movie.id}
