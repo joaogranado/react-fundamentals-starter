@@ -11,9 +11,7 @@ import React from 'react';
 
 const List = (props) => (
   <div className={props.className}>
-    {props.items.map((value, index) => {
-      return props.children(value, index);
-    })}
+    {props.children}
   </div>
 );
 
@@ -22,9 +20,12 @@ const List = (props) => (
 */
 
 List.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
   className: PropTypes.string,
-  items: PropTypes.array.isRequired,
+  items: PropTypes.array,
 };
 
 /**

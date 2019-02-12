@@ -12,7 +12,7 @@ import React from 'react';
  */
 
 const Grid = (props) => (
-  <List className="grid" items={props.items}>
+  <List className="grid">
     {props.children}
   </List>
 );
@@ -22,8 +22,10 @@ const Grid = (props) => (
  */
 
 Grid.propTypes = {
-  children: PropTypes.func.isRequired,
-  items: PropTypes.array.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 /**
