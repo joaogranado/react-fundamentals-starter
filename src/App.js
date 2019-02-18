@@ -2,6 +2,7 @@
 * Module dependencies.
 */
 
+import debounce from 'lodash/debounce';
 import axios from 'axios';
 import Container from './components/Container';
 import Grid from './components/Grid';
@@ -45,18 +46,53 @@ const searchMovie = (query) => {
 
 class App extends React.Component {
   state = {
-    results: []
+    value: '',
+    results: [],
+    searchResults: []
   };
 
+  async componentDidMount() {
+    const { data } = await getMovies();
+
+    this.setState({ results: data.results });
+  }
+
+  searchMovie = debounce(async () => {
+    if (this.state.value.length <= 3) {
+      return this.setState(state =>
+        state.searchResults.length ? { searchResults: [] } : null
+      );
+    }
+
+    const { data } = await searchMovie(this.state.value);
+
+    this.setState({ searchResults: data.results });
+  }, 300);
+
   handleChange = (event) => {
+    const query = event.target.value;
+
     this.setState({
-      results: this.props.search(event.target.value)
+      value: query
+    }, () => {
+      this.searchMovie();
     });
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!this.state.searchResults.length) {
+      return;
+    }
+
+    this.setState((state) => ({
+      results: state.searchResults
+    }));
+  }
+
   render() {
-    const { movies } = this.props;
-    const { results } = this.state;
+    const { results, searchResults } = this.state;
 
     return (
       <Main>
@@ -65,18 +101,23 @@ class App extends React.Component {
         </Nav>
 
         <Container>
-          <SearchInput
-            name="search"
-            placeholder="Search..."
-            onChange={this.handleChange}
+          <form
+            className="form"
+            onSubmit={this.handleSubmit}
           >
-            {results.length > 0 && results.map((movie) => (
-              <SearchInputItem key={movie.id} >{movie.title}</SearchInputItem>
-            ))}
-          </SearchInput>
-
+            <SearchInput
+              autoComplete="off"
+              name="search"
+              placeholder="Search..."
+              onChange={this.handleChange}
+            >
+              {searchResults.length > 0 && searchResults.map((movie) => (
+                <SearchInputItem key={movie.id} >{movie.title}</SearchInputItem>
+              ))}
+            </SearchInput>
+          </form>
           <Grid>
-            {movies.map((movie) => (
+            {results.map((movie) => (
               <Movie
                 backdropUrl={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path || movie.poster_path}`}
                 key={movie.id}
@@ -91,6 +132,7 @@ class App extends React.Component {
     );
   }
 }
+
 
 /**
 * Export `App` component.
