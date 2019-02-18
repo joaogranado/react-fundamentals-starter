@@ -57,6 +57,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     line-height: 1;
     background-color: var(--secondary-color);
+    color: white;
 }
 ol, ul {
   list-style: none;
