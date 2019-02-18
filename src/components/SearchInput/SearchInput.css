@@ -41,3 +41,8 @@
   color: #fff;
   border-bottom: solid 1px rgba(255,255,255,0.1);
 }
+
+.form {
+  width: 100%;
+  max-width: 1000px;
+}
