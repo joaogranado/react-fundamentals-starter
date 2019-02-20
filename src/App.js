@@ -1,10 +1,11 @@
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 
 import { BrowserRouter, Route } from 'react-router-dom';
 import React from 'react';
 import Home from './pages/Home';
+import Movie from './pages/Movie';
 
 /**
 * `App` component.
@@ -17,6 +18,10 @@ const App = () => (
         component={Home}
         exact
         path="/"
+      />
+      <Route
+        component={Movie}
+        path="/movie/:id"
       />
     </>
   </BrowserRouter>

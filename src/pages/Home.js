@@ -3,6 +3,7 @@
 */
 
 import { getMovies, searchMovie } from '../api';
+import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import debounce from 'lodash/debounce';
 import Grid from '../components/Grid';
@@ -91,11 +92,16 @@ class Home extends React.Component {
           </form>
           <Grid>
             {results.map((movie) => (
-              <Movie
-                backdropUrl={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path || movie.poster_path}`}
-                posterUrl={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-                title={movie.title}
-              />
+              <Link
+                key={movie.id}
+                to={`/movie/${movie.id}`}
+              >
+                <Movie
+                  backdropUrl={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path || movie.poster_path}`}
+                  posterUrl={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+                  title={movie.title}
+                />
+              </Link>
             ))
             }
           </Grid>
