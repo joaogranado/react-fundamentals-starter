@@ -31,7 +31,7 @@ export const getMovies = () => {
   }))
 };
 
-export const searchMovie = (query) => {
+export const searchMovies = (query) => {
   return axios.get(url.format({
     protocol: 'https',
     hostname: 'api.themoviedb.org/3',
