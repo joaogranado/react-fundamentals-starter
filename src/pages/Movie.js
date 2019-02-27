@@ -3,8 +3,11 @@
  */
 
 import './Movie.css';
+import * as actions from '../redux/actions';
+import * as selectors from '../redux/selectors';
+import { compose } from 'lodash/fp';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { getMovie } from '../api';
 import Container from '../components/Container';
 import React from 'react';
 
@@ -13,20 +16,12 @@ import React from 'react';
  */
 
 class Movie extends React.Component {
-  state = {
-    movie: null
-  };
-
   async componentDidMount() {
-    const { data } = await getMovie(this.props.match.params.id);
-
-    this.setState({
-      movie: data
-    });
+    this.props.getMovie(this.props.match.params.id);
   }
 
   render() {
-    const { movie } = this.state;
+    const { movie } = this.props;
 
     if (!movie) {
       return null;
@@ -62,4 +57,15 @@ class Movie extends React.Component {
   }
 }
 
-export default withRouter(Movie);
+const mapStateToProps = (state, props) => ({
+  movie: selectors.getMovie(state, props.match.params.id)
+});
+
+const mapDispatchToProps = {
+  getMovie: actions.getMovie
+};
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Movie);

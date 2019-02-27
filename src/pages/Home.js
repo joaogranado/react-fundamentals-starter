@@ -2,7 +2,9 @@
 * Module dependencies.
 */
 
-import { getMovies, searchMovie } from '../api';
+import * as actions from '../redux/actions';
+import * as selectors from '../redux/selectors';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import debounce from 'lodash/debounce';
@@ -15,32 +17,22 @@ import React from 'react';
 import SearchInput, { SearchInputItem } from '../components/SearchInput';
 
 /**
-* `Home` component.
-*/
+ * `Home` component.
+ */
 
 class Home extends React.Component {
   state = {
     value: '',
-    results: [],
-    searchResults: []
   };
 
-  async componentDidMount() {
-    const { data } = await getMovies();
+  componentDidMount() {
+    const { getMovies } = this.props;
 
-    this.setState({ results: data.results });
+    getMovies();
   }
 
-  searchMovie = debounce(async () => {
-    if (this.state.value.length <= 3) {
-      return this.setState(state =>
-        state.searchResults.length ? { searchResults: [] } : null
-      );
-    }
-
-    const { data } = await searchMovie(this.state.value);
-
-    this.setState({ searchResults: data.results });
+  searchMovie = debounce(() => {
+    this.props.searchMovies(this.state.value);
   }, 300);
 
   handleChange = (event) => {
@@ -56,17 +48,11 @@ class Home extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!this.state.searchResults.length) {
-      return;
-    }
-
-    this.setState((state) => ({
-      results: state.searchResults
-    }));
+    this.props.updateMoviesWithSearchResults(this.props.searchResultsIds);
   }
 
   render() {
-    const { results, searchResults } = this.state;
+    const { results, searchResults } = this.props;
 
     return (
       <Main>
@@ -111,9 +97,20 @@ class Home extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  results: selectors.getMovieResults(state),
+  searchResults: selectors.getMovieSearchResults(state),
+  searchResultsIds: selectors.getMovieSearchResultIds(state),
+});
+
+const mapDispatchToProps = {
+  getMovies: actions.getMovies,
+  searchMovies: actions.searchMovies,
+  updateMoviesWithSearchResults: actions.updateMoviesWithSearchResults,
+}
 
 /**
 * Export `Home` component.
 */
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
